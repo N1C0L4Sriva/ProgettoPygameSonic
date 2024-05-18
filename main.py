@@ -4,7 +4,7 @@ from sys import exit
 def animation():
     global sonic_surface, sonic_index, sonic_index2
 
-    if sonic_rect.bottom<650:
+    if not sonic_rect.colliderect(ground2_rect) and sonic_rect.bottom<650:
         sonic_index2+=0.1
         sonic_surface=sonic_jump
         if sonic_index2>=len(sonic_jump):
@@ -16,8 +16,8 @@ def animation():
             sonic_index=0
         sonic_surface=sonic_walk[int(sonic_index)]
 
-sonic_y=650
-sonic_x=400
+sonic_y=750
+sonic_x=300
 gravità=0 
 
 
@@ -25,10 +25,15 @@ screen=pygame.display.set_mode((1200,800))
 
 pygame.display.set_caption('sonic')
 
-sky_surface=pygame.image.load('immaginiGioco/background.png').convert()
-sky_x=-20
+sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
 
-ground_surface=pygame.image.load('immaginiGioco/Ground.png').convert()
+ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
+ground_rect=ground_surface.get_rect(topleft=(0,700))
+
+ground2_surface=pygame.image.load('immaginiGioco/pavimento2.png').convert()
+ground2_x=600
+ground2_rect=ground2_surface.get_rect(topleft=(ground2_x,550))
+
 
 sonic=pygame.image.load('immaginiGioco/sonic.png').convert_alpha()
 sonic_rect=sonic.get_rect(bottomleft=(sonic_x,sonic_y))
@@ -49,12 +54,15 @@ while True:
             pygame.quit()
             exit()
         
-        if event.type==pygame.KEYDOWN and sonic_rect.bottom>=650:
+        if event.type==pygame.KEYDOWN and sonic_rect.bottom>=650 or sonic_rect.colliderect(ground2_rect):
             if event.key==pygame.K_UP:
                 gravità= -20
 
-    screen.blit(sky_surface,(sky_x,0))
-    screen.blit(ground_surface,(0,650))
+    screen.blit(sky_surface,(0,0))
+    screen.blit(ground_surface,ground_rect)
+    screen.blit(ground2_surface,ground2_rect)
+   
+
     animation()
     screen.blit(sonic_surface,sonic_rect)
 
@@ -62,18 +70,23 @@ while True:
     
     keys=pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
-        sonic_rect.right+=4
-        sky_x-=0.2
+        # sonic_rect.right+=4
+        ground2_rect.x-=4
     
     if keys[pygame.K_LEFT]:
         sonic_surface=pygame.transform.flip(sonic_surface,True, False)
-        sonic_rect.left-=4
-        sky_x+=0.2
-    
+        #sonic_rect.left-=4
+        ground2_rect.x+=4
+
     gravità+=1
     sonic_rect.y+=gravità
-    if sonic_rect.bottom>=650:
-        sonic_rect.bottom=650
+    if sonic_rect.bottom>=700:
+        sonic_rect.bottom=700
+
+    if sonic_rect.colliderect(ground2_rect):
+        sonic_rect.bottom=551
+
+    
 
        
     
