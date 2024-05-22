@@ -25,9 +25,11 @@ gravità=0
 
 punteggio=0
 monete=[]
-def generamonete(posizionex, posizioneyblocco):
-    altezza=randint(10,10*7)
-    moneta= Monete((posizionex,posizioneyblocco-altezza), (0,0),(0,0),(10,10))
+
+def generamonete(posizionex, altezza):
+    altezza=randint(300,800)
+    moneta= Monete((posizionex,altezza), (0,0),(0,0),(10,10))
+    screen.blit(moneta)
     return moneta
 
 
@@ -40,7 +42,7 @@ sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
 ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
 ground_rect=ground_surface.get_rect(topleft=(0,700))
 
-ground2_surface=pygame.image.load('immaginiGioco/pavimento2.png').convert()
+ground2_surface=pygame.image.load('immaginiGioco/piattaforma.png').convert()
 ground2_x=600
 ground2_rect=ground2_surface.get_rect(topleft=(ground2_x,550))
 
@@ -71,7 +73,7 @@ while True:
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
     screen.blit(ground2_surface,ground2_rect)
-
+    generamonete()
 
 
 
