@@ -82,10 +82,7 @@ while True:
         # sonic_rect.right+=4
         ground2_rect.x-=4
     
-    if keys[pygame.K_LEFT]:
-        sonic_surface=pygame.transform.flip(sonic_surface,True, False)
-        #sonic_rect.left-=4
-        ground2_rect.x+=4
+    
 
     gravità+=1
     sonic_rect.y+=gravità
