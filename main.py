@@ -23,15 +23,15 @@ sonic_y=750
 sonic_x=300
 gravità=0 
 
+
+
 punteggio=0
-monete=[]
 
-def generamonete(posizionex, altezza):
-    altezza=randint(300,800)
-    moneta= Monete((posizionex,altezza), (0,0),(0,0),(10,10))
-    screen.blit(moneta)
-    return moneta
 
+# def generamonete(posizionex, altezza): 
+    # moneta= Monete((posizionex,altezza), (0,0),(0,0),(10,10))
+    # screen.blit(moneta,monete_rect)
+    # return moneta
 
 screen=pygame.display.set_mode((1200,800))
 
@@ -58,6 +58,11 @@ sonic_index=0
 sonic_index2=0
 sonic_surface=sonic_walk[sonic_index]
 
+
+# moneta1=pygame.image.load('immaginiGioco/moneta1.png')
+# monete_tutte=[]
+# monete_tutte.append(Monete)
+
 Clock=pygame.time.Clock()
 
 while True:
@@ -73,18 +78,16 @@ while True:
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
     screen.blit(ground2_surface,ground2_rect)
-    generamonete()
-
-
-
+    
+    
     #muovo sonic con la tastiera
     
     keys=pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
         # sonic_rect.right+=4
         ground2_rect.x-=4
-    
-    
+    if keys[pygame.K_LEFT]:
+        ground2_rect.x+=4
 
     gravità+=1
     sonic_rect.y+=gravità
