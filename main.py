@@ -1,10 +1,13 @@
 import pygame
 from sys import exit
+from random import randint
+
+from monete import Monete
 
 def animation():
     global sonic_surface, sonic_index, sonic_index2
 
-    if not sonic_rect.colliderect(ground2_rect) and sonic_rect.bottom<650:
+    if not sonic_rect.colliderect(ground2_rect) and not sonic_rect.colliderect(ground_rect):  #and sonic_rect.bottom<650:
         sonic_index2+=0.1
         sonic_surface=sonic_jump
         if sonic_index2>=len(sonic_jump):
@@ -20,6 +23,15 @@ sonic_y=750
 sonic_x=300
 gravità=0 
 
+punteggio=0
+monete=[]
+
+def generamonete(posizionex, altezza):
+    altezza=randint(300,800)
+    moneta= Monete((posizionex,altezza), (0,0),(0,0),(10,10))
+    screen.blit(moneta)
+    return moneta
+
 
 screen=pygame.display.set_mode((1200,800))
 
@@ -30,7 +42,7 @@ sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
 ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
 ground_rect=ground_surface.get_rect(topleft=(0,700))
 
-ground2_surface=pygame.image.load('immaginiGioco/pavimento2.png').convert()
+ground2_surface=pygame.image.load('immaginiGioco/piattaforma.png').convert()
 ground2_x=600
 ground2_rect=ground2_surface.get_rect(topleft=(ground2_x,550))
 
@@ -61,10 +73,9 @@ while True:
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
     screen.blit(ground2_surface,ground2_rect)
-   
+    generamonete()
 
-    animation()
-    screen.blit(sonic_surface,sonic_rect)
+
 
     #muovo sonic con la tastiera
     
@@ -73,27 +84,29 @@ while True:
         # sonic_rect.right+=4
         ground2_rect.x-=4
     
-    if keys[pygame.K_LEFT]:
-        sonic_surface=pygame.transform.flip(sonic_surface,True, False)
-        #sonic_rect.left-=4
-        ground2_rect.x+=4
+    
 
     gravità+=1
     sonic_rect.y+=gravità
-    if sonic_rect.bottom>=700:
-        sonic_rect.bottom=700
+    if sonic_rect.colliderect(ground_rect)and sonic_rect.bottom>=700:
+
+        sonic_rect.bottom=ground_rect.top +1
 
     if sonic_rect.colliderect(ground2_rect):
-        sonic_rect.bottom=551
+        sonic_rect.bottom=ground2_rect.top +1
 
     
-
+    animation()
        
-    
-    
+    screen.blit(sonic_surface,sonic_rect)
+    # pygame.draw.rect(screen,(255,0,0), sonic_rect,1)
+    # pygame.draw.rect(screen,(255,0,0), ground2_rect,1)
+    # pygame.draw.rect(screen,(255,0,0), ground_rect, 1)
     # if keys[pygame.K_UP]:
         
     
 
     pygame.display.update()
     Clock.tick(60)
+
+
