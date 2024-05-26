@@ -7,7 +7,21 @@ sonic_y=750
 sonic_x=300
 gravità=0 
 VelAvanza=4
+class piattaforme:
+    def __init__(self):
+        self.screen=screen
+        self.piattaforma1_x=600
+        self.piattaforma1_y=550
+        self.piattaforma1=pygame.image.load('immaginiGioco/piattaforma.png').convert()
 
+    def draw_piattaforme(self):
+        if keys[pygame.K_LEFT]:
+            self.piattaforma1_x+=VelAvanza
+        if keys[pygame.K_RIGHT]:
+            self.piattaforma1_x-=VelAvanza
+        self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
+        screen.blit(self.piattaforma1,self.piattaforma1_rect)
+   
 class Monete:
     def __init__(self):
         self.monete_pos_x=1100
@@ -15,13 +29,13 @@ class Monete:
         self.monete_pos_x=1200
         self.screen=screen        
         self.moneta1=pygame.image.load('immaginiGioco/moneta1.png')
-        self.moneta2=pygame.image.load('immaginiGioco/moneta_2.png')
-        self.moneta3=pygame.image.load('immaginiGioco/moneta3.png')
-        self.moneta4=pygame.image.load('immaginiGioco/moneta4.png')
-        self.moneta5=pygame.image.load('immaginiGioco/moneta5.png')
-        self.moneta6=pygame.image.load('immaginiGioco/moneta6.png')
-        self.moneta7=pygame.image.load('immaginiGioco/moneta7.png')
-        self.moneta8=pygame.image.load('immaginiGioco/moneta8.png')
+        self.moneta2=pygame.image.load('immaginiGioco/monete_2.png')
+        self.moneta3=pygame.image.load('immaginiGioco/monete3.png')
+        self.moneta4=pygame.image.load('immaginiGioco/monete4.png')
+        self.moneta5=pygame.image.load('immaginiGioco/monete5.png')
+        self.moneta6=pygame.image.load('immaginiGioco/monete6.png')
+        self.moneta7=pygame.image.load('immaginiGioco/monete7.png')
+        self.moneta8=pygame.image.load('immaginiGioco/monete8.png')
         self.moneteArray=[self.moneta1,self.moneta2,self.moneta3,self.moneta4,self.moneta5,self.moneta6,self.moneta6,self.moneta8]
         self.monete_index=0
         self.monete_surface=self.moneteArray[self.monete_index]
@@ -29,7 +43,7 @@ class Monete:
     def animazione_monete(self):
         self.monete_index+=0.1
         if self.monete_index>=len(self.moneteArray):
-            self.monete_arrey=0
+            self.monete_index=0
         self.monete_surface=self.moneteArray[int(self.monete_index)]
 
     def aggiungimonete(self):
@@ -84,6 +98,9 @@ sonic_index=0
 sonic_index2=0
 sonic_surface=sonic_walk[sonic_index]
 
+piattaforme_tutte=[]
+piattaforme_tutte.append(piattaforme())
+
 monete_tutte=[]
 monete_tutte.append(Monete())
 # monete=Monete(display)
@@ -104,7 +121,6 @@ while True:
 
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
-    screen.blit(ground2_surface,ground2_rect)
  
     #muovo sonic con la tastiera 
     keys=pygame.key.get_pressed()
@@ -113,20 +129,20 @@ while True:
         ground_rect.x-=4
         if ground_rect.x<=-50:
             ground_rect.x=0
-        ground2_rect.x-=4
-
 
     if keys[pygame.K_LEFT]:
         ground_rect.x+=4
         if ground_rect.x>0:
             ground_rect.x=-50
-        ground2_rect.x+=4
 
-    
+    for platform in piattaforme_tutte:
+        platform.draw_piattaforme()
+
     if monete_tutte[-1].monete_pos_x<750:
         monete_tutte.append(Monete())
 
     for moneta in monete_tutte:
+        moneta.animazione_monete()
         moneta.aggiungimonete()
 
     gravità+=1
@@ -144,20 +160,11 @@ while True:
     animation()
     screen.blit(sonic_surface,sonic_rect)
 
-    #creo monete
-    # monete_tutte.append(Monete)
-    # for monete in monete_tutte:
-    #     monete.draw(screen)
-
     # pygame.draw.rect(screen,(255,0,0), sonic_rect,1)
     # pygame.draw.rect(screen,(255,0,0), ground2_rect,1)
     # pygame.draw.rect(screen,(255,0,0), ground_rect, 1)
     # if keys[pygame.K_UP]:
-        
-    # monete.aggiungimonete()
 
-    # surf = pygame.transform.scale(display, (1200,800))
-    # screen.blit(surf, (0,0))
     pygame.display.update()
     Clock.tick(60)
 
