@@ -12,16 +12,32 @@ class Monete:
     def __init__(self):
         self.monete_pos_x=1100
         self.monete_altezza=randint(300,650)
-        self.monete_pos_x=900
+        self.monete_pos_x=1200
         self.screen=screen        
         self.moneta1=pygame.image.load('immaginiGioco/moneta1.png')
+        self.moneta2=pygame.image.load('immaginiGioco/moneta_2.png')
+        self.moneta3=pygame.image.load('immaginiGioco/moneta3.png')
+        self.moneta4=pygame.image.load('immaginiGioco/moneta4.png')
+        self.moneta5=pygame.image.load('immaginiGioco/moneta5.png')
+        self.moneta6=pygame.image.load('immaginiGioco/moneta6.png')
+        self.moneta7=pygame.image.load('immaginiGioco/moneta7.png')
+        self.moneta8=pygame.image.load('immaginiGioco/moneta8.png')
+        self.moneteArray=[self.moneta1,self.moneta2,self.moneta3,self.moneta4,self.moneta5,self.moneta6,self.moneta6,self.moneta8]
+        self.monete_index=0
+        self.monete_surface=self.moneteArray[self.monete_index]
+
+    def animazione_monete(self):
+        self.monete_index+=0.1
+        if self.monete_index>=len(self.moneteArray):
+            self.monete_arrey=0
+        self.monete_surface=self.moneteArray[int(self.monete_index)]
 
     def aggiungimonete(self):
         if keys[pygame.K_LEFT]:
             self.monete_pos_x+=VelAvanza
         if keys[pygame.K_RIGHT]:
             self.monete_pos_x-=VelAvanza
-        screen.blit(self.moneta1,(self.monete_pos_x,self.monete_altezza))
+        screen.blit(self.monete_surface,(self.monete_pos_x,self.monete_altezza))
         
 def animation():
     global sonic_surface, sonic_index, sonic_index2
@@ -106,6 +122,7 @@ while True:
             ground_rect.x=-50
         ground2_rect.x+=4
 
+    
     if monete_tutte[-1].monete_pos_x<750:
         monete_tutte.append(Monete())
 
