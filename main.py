@@ -7,20 +7,20 @@ sonic_y=750
 sonic_x=300
 gravità=0 
 VelAvanza=4
-class piattaforme:
-    def __init__(self):
-        self.screen=screen
-        self.piattaforma1_x=600
-        self.piattaforma1_y=550
-        self.piattaforma1=pygame.image.load('immaginiGioco/piattaforma.png').convert()
+# class piattaforme:
+#     def __init__(self):
+#         self.screen=screen
+#         self.piattaforma1_x=600
+#         self.piattaforma1_y=550
+#         self.piattaforma1=pygame.image.load('immaginiGioco/piattaforma.png').convert()
 
-    def draw_piattaforme(self):
-        if keys[pygame.K_LEFT]:
-            self.piattaforma1_x+=VelAvanza
-        if keys[pygame.K_RIGHT]:
-            self.piattaforma1_x-=VelAvanza
-        self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
-        screen.blit(self.piattaforma1,self.piattaforma1_rect)
+#     def draw_piattaforme(self):
+#         if keys[pygame.K_LEFT]:
+#             self.piattaforma1_x+=VelAvanza
+#         if keys[pygame.K_RIGHT]:
+#             self.piattaforma1_x-=VelAvanza
+#         self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
+#         screen.blit(self.piattaforma1,self.piattaforma1_rect)
    
 class Monete:
     def __init__(self):
@@ -98,8 +98,8 @@ sonic_index=0
 sonic_index2=0
 sonic_surface=sonic_walk[sonic_index]
 
-piattaforme_tutte=[]
-piattaforme_tutte.append(piattaforme())
+# piattaforme_tutte=[]
+# piattaforme_tutte.append(piattaforme())
 
 monete_tutte=[]
 monete_tutte.append(Monete())
@@ -121,6 +121,7 @@ while True:
 
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
+    screen.blit(ground2_surface,ground2_rect)
  
     #muovo sonic con la tastiera 
     keys=pygame.key.get_pressed()
@@ -129,14 +130,16 @@ while True:
         ground_rect.x-=4
         if ground_rect.x<=-50:
             ground_rect.x=0
+        ground2_rect.x-=4
 
     if keys[pygame.K_LEFT]:
         ground_rect.x+=4
         if ground_rect.x>0:
             ground_rect.x=-50
+        ground2_rect.x+=4
 
-    for platform in piattaforme_tutte:
-        platform.draw_piattaforme()
+    # for platform in piattaforme_tutte:
+    #     platform.draw_piattaforme()
 
     if monete_tutte[-1].monete_pos_x<750:
         monete_tutte.append(Monete())
