@@ -25,7 +25,7 @@ class mob:
         if keys[pygame.K_RIGHT]:
             self.mob_x-=VelAvanza
         
-        while self.mob_x<-200:
+        #creo il loop del mob
             if self.parametro2==0:
                 self.parametro2+=1
                 self.mob_x+=4
