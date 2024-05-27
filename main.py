@@ -4,6 +4,8 @@ from random import randint
 
 from monete import Monete
 
+
+
 def animation():
     global sonic_surface, sonic_index, sonic_index2
 
