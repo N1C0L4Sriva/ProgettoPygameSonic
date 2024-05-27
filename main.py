@@ -35,7 +35,10 @@ def generamonete(posizionex, altezza):
 
 screen=pygame.display.set_mode((1200,800))
 
+
 pygame.display.set_caption('sonic')
+
+
 
 sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
 
