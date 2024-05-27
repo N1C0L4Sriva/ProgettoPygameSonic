@@ -53,6 +53,45 @@ sonic_x=300
 gravità=0 
 VelAvanza=7
 
+class mob:
+    def __init__(self):
+        self.screen=screen
+        self.mob_x=700
+        self.mob_y=650
+        self.mob1_01=pygame.image.load('immaginiGioco/mob1_01.png').convert()
+        self.mob1_02=pygame.image.load('immaginiGioco/mob1_02.png').convert()
+        self.mob1_00=[self.mob1_01,self.mob1_02]
+        self.parametro=0
+        self.parametro2=0
+        self.mob1=self.mob1_00[self.parametro]
+
+    def movimento_mob(self):
+        if keys[pygame.K_LEFT]:
+            self.mob_x+=VelAvanza
+        if keys[pygame.K_RIGHT]:
+            self.mob_x-=VelAvanza
+        
+        #creo il loop del mob
+            if self.parametro2==0:
+                self.parametro2+=1
+                self.mob_x+=4
+                if self.parametro==50:
+                    self.parametro2-=1
+                    self.mob_x-=4
+
+
+
+
+        
+
+        
+
+        
+    
+    def draw_mob(self):
+        self.mob_rect=self.mob1.get_rect(topleft=(self.mob_x,self.mob_y))
+        screen.blit(self.mob1,self.mob_rect)
+
 class piattaforme:
     def __init__(self):
         self.screen=screen
@@ -62,6 +101,10 @@ class piattaforme:
         self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
 
     def draw_piattaforme(self):
+        self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
+        screen.blit(self.piattaforma1,self.piattaforma1_rect)
+  
+    def mov_piattaforme(self):
         global gravità
 
         if keys[pygame.K_UP] and (sonic_rect.colliderect(ground_rect) or sonic_rect.colliderect(self.piattaforma1_rect)):
@@ -72,10 +115,7 @@ class piattaforme:
 
         if keys[pygame.K_RIGHT]:
             self.piattaforma1_x-=VelAvanza
-        self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
-        screen.blit(self.piattaforma1,self.piattaforma1_rect)
-  
-    def mov_piattaforme(self):
+
         if sonic_rect.colliderect(self.piattaforma1_rect):
             sonic_rect.bottom=550
 
@@ -147,8 +187,9 @@ piattaforme_tutte.append(piattaforme())
 
 monete_tutte=[]
 monete_tutte.append(Monete())
-# monete=Monete(display)
-# moneta1=pygame.image.load('immaginiGioco/moneta1.png')
+
+mob_tutti=[]
+mob_tutti.append(mob())
 
 
 Clock=pygame.time.Clock()
@@ -189,8 +230,8 @@ while True:
         sonic_rect.bottom=ground_rect.top +1
     
     for platform in piattaforme_tutte:
-        platform.draw_piattaforme()
         platform.mov_piattaforme()
+        platform.draw_piattaforme()
     
     if monete_tutte[-1].monete_pos_x<750:
         monete_tutte.append(Monete())
@@ -198,6 +239,10 @@ while True:
     for moneta in monete_tutte:
         moneta.animazione_monete()
         moneta.aggiungimonete()
+
+    for mostro in mob_tutti:
+        mostro.movimento_mob()
+        mostro.draw_mob()
 
     animation()
     screen.blit(sonic_surface,sonic_rect)
