@@ -1,7 +1,6 @@
 import pygame
 from sys import exit
 from random import randint
-# from monete import Monete
 
 sonic_y=750
 sonic_x=300
@@ -85,11 +84,6 @@ sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
 
 ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
 ground_rect=ground_surface.get_rect(topleft=(-100,700))
-
-# ground2_surface=pygame.image.load('immaginiGioco/piattaforma.png').convert()
-# ground2_x=600
-# ground2_rect=ground2_surface.get_rect(topleft=(ground2_x,550))
-
 
 sonic=pygame.image.load('immaginiGioco/sonic.png').convert_alpha()
 sonic_rect=sonic.get_rect(bottomleft=(sonic_x,sonic_y))
