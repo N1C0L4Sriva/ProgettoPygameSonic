@@ -5,45 +5,37 @@ from random import randint
 sonic_y=750
 sonic_x=300
 gravità=0 
-VelAvanza=7
+VelAvanza=10
 
 class mob:
     def __init__(self):
         self.screen=screen
-        self.mob_x=700
-        self.mob_y=650
-        self.mob1_01=pygame.image.load('immaginiGioco/mob1_01.png').convert()
-        self.mob1_02=pygame.image.load('immaginiGioco/mob1_02.png').convert()
+        self.mob_x=randint(1300,1500)
+        self.mob_y=620
+        self.mob1_01=pygame.image.load('immaginiGioco/mob1_01.png').convert_alpha()
+        self.mob1_02=pygame.image.load('immaginiGioco/mob1_02.png').convert_alpha()
         self.mob1_00=[self.mob1_01,self.mob1_02]
         self.parametro=0
         self.parametro2=0
         self.mob1=self.mob1_00[self.parametro]
+        self.vel_y=5
+        self.mob_rect=self.mob1.get_rect(topleft=(self.mob_x,self.mob_y))
 
     def movimento_mob(self):
+        self.parametro2+=0.02
+        if int(self.parametro2)==0:
+            self.mob_rect.y-=self.vel_y
+        else:
+            self.mob_rect.y+=self.vel_y
+        if int(self.parametro2)>1:
+            self.parametro2=0
+
         if keys[pygame.K_LEFT]:
-            self.mob_x+=VelAvanza
+            self.mob_rect.x+=VelAvanza
         if keys[pygame.K_RIGHT]:
-            self.mob_x-=VelAvanza
-        
-        #creo il loop del mob
-            if self.parametro2==0:
-                self.parametro2+=1
-                self.mob_x+=4
-                if self.parametro==50:
-                    self.parametro2-=1
-                    self.mob_x-=4
-
-
-
-
-        
-
-        
-
-        
+            self.mob_rect.x-=VelAvanza
     
     def draw_mob(self):
-        self.mob_rect=self.mob1.get_rect(topleft=(self.mob_x,self.mob_y))
         screen.blit(self.mob1,self.mob_rect)
 
 class piattaforme:
@@ -162,6 +154,9 @@ while True:
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
 
+    animation()
+    screen.blit(sonic_surface,sonic_rect)
+
     gravità+=1
     sonic_rect.y+=gravità
 
@@ -193,15 +188,15 @@ while True:
     for moneta in monete_tutte:
         moneta.animazione_monete()
         moneta.aggiungimonete()
+    
+    if mob_tutti[-1].mob_rect.x<650:
+        mob_tutti.append(mob())
 
     for mostro in mob_tutti:
         mostro.movimento_mob()
         mostro.draw_mob()
 
-    animation()
-    screen.blit(sonic_surface,sonic_rect)
-
     pygame.display.update()
-    Clock.tick(60)
+    Clock.tick(60+pygame.time.get_ticks()//2000)
 
 
