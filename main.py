@@ -6,8 +6,6 @@ from random import randint
 screen=pygame.display.set_mode((1100,700))
 
 pygame.display.set_caption('sonic')
-BLUE = (0, 0, 255)
-WHITE = (255, 255, 255)
 
 # Creazione della finestra
 pygame.display.set_caption('Sonic Main Menu')
@@ -31,34 +29,6 @@ def generamoneta(piattafroma_tutte):
     while not ismonetavalida(moneta, piattaforme_tutte):
         moneta=Monete()
     return moneta
-
-def main_menu():
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button.collidepoint(event.pos):
-                    print("Start button clicked!")
-                    # Qui potresti inserire la chiamata per avviare il gioco
-                    # start_game()
-
-        screen.fill(BLUE)
-
-        # Disegna il testo "START"
-        draw_text('START ', font, WHITE, screen, 1100 // 2, 800 // 2)
-
-        # Crea un rettangolo attorno al testo "START"
-        start_button = pygame.Rect((11000 // 2 - 100, 800 // 2 - 50), (200, 100))
-        pygame.draw.rect(screen, WHITE, start_button, 2)
-
-        pygame.display.flip()
-
-if __name__ == "__main__":
-    main_menu()
-
-
 
 sonic_y=750
 sonic_x=300
@@ -106,33 +76,29 @@ class piattaforme:
         self.rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
 
     def draw_piattaforme(self):
-        self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
-        screen.blit(self.piattaforma1,self.piattaforma1_rect)
+        screen.blit(self.piattaforma1,self.rect)
   
     def mov_piattaforme(self):
         global gravità
         if keys[pygame.K_LEFT]:
-            self.piattaforma1_x+=VelAvanza
+            self.rect.x+=VelAvanza
 
         if keys[pygame.K_RIGHT]:
-            self.piattaforma1_x-=VelAvanza
+            self.rect.x-=VelAvanza
 
         if keys[pygame.K_UP] and (sonic_rect.colliderect(ground_rect)):
             gravità=-20
         
-        if keys[pygame.K_UP] and sonic_rect.colliderect(self.piattaforma1_rect):
+        if keys[pygame.K_UP] and sonic_rect.colliderect(self.rect):
             gravità=-20
 
-        if sonic_rect.colliderect(self.piattaforma1_rect):
+        if sonic_rect.colliderect(self.rect):
             if gravità>0:
-                sonic_rect.bottom=self.piattaforma1_rect.top
+                sonic_rect.bottom=self.rect.top
             if gravità<=0:
                 gravità=10
-                sonic_rect.top=self.piattaforma1_rect.bottom
+                sonic_rect.top=self.rect.bottom
            
-        
-            
-      
 class Monete:
     def __init__(self,posxminima=1100, posxmassima=1300):
         self.monete_pos_x=1300
@@ -157,10 +123,6 @@ class Monete:
     def collide(self, other_rect):
         return self.rect.colliderect(other_rect)
     
-         
-
-
-
 
     def animazione_monete(self):
         self.monete_index+=0.1
@@ -218,7 +180,7 @@ punteggio=0
 
 
 def gioco():
-    global gravità, piattaforma1_rect, keys
+    global gravità, keys
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -229,17 +191,7 @@ def gioco():
                 if event.key==pygame.K_ESCAPE:
                     pygame.quit()
                     exit()
-
-    
-        for i in range(len(monete_tutte)):
-            if monete_tutte[i].collide(sonic_rect):
-                punteggio+=1
-                monete_tutte.pop(i)
-                generamoneta()
         
-        draw_text(str(punteggio), font, (255,255,0), screen, 550, 10)  
-            
-
         screen.blit(sky_surface,(0,0))
         screen.blit(ground_surface,ground_rect)
 
@@ -261,12 +213,12 @@ def gioco():
             if ground_rect.x>0:
                 ground_rect.x=-50
 
-        if piattaforme_tutte[-1].piattaforma1_x<850:
-            piattaforme_tutte.append(piattaforme())
-
         if sonic_rect.colliderect(ground_rect)and sonic_rect.bottom>=700:
             sonic_rect.bottom=ground_rect.top +1
-    
+
+        if piattaforme_tutte[-1].rect.x<850:
+            piattaforme_tutte.append(piattaforme())
+
         for platform in piattaforme_tutte:
             platform.mov_piattaforme()
             platform.draw_piattaforme()
