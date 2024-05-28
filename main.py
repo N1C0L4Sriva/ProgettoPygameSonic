@@ -3,7 +3,7 @@ pygame.font.init()
 from sys import exit
 from random import randint
 
-screen=pygame.display.set_mode((1100,800))
+screen=pygame.display.set_mode((1100,700))
 
 pygame.display.set_caption('sonic')
 BLUE = (0, 0, 255)
@@ -19,6 +19,18 @@ def draw_text(text, font, color, surface, x, y):
     text_obj = font.render(text, True, color)
     text_rect = text_obj.get_rect(center=(x, y))
     surface.blit(text_obj, text_rect)
+
+def ismonetavalida(moneta, piattaforme_tutte):
+    for piattaforma in piattaforme_tutte:
+        if moneta.collide(piattaforma.rect):
+            return False
+    return True
+
+def generamoneta(piattafroma_tutte):
+    moneta=Monete()
+    while not ismonetavalida(moneta, piattaforme_tutte):
+        moneta=Monete()
+    return moneta
 
 def main_menu():
     while True:
@@ -90,7 +102,7 @@ class piattaforme:
         self.piattaforma1_x=1100
         self.piattaforma1_y=550
         self.piattaforma1=pygame.image.load('immaginiGioco/piattaforma.png').convert()
-        self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
+        self.rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
 
     def draw_piattaforme(self):
         self.piattaforma1_rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
@@ -117,9 +129,11 @@ class piattaforme:
 
    
 class Monete:
-    def __init__(self):
+    def __init__(self,posxminima=1100, posxmassima=1300):
         self.monete_pos_x=1300
         self.monete_altezza=randint(300,650)
+        
+        self.monete_larghezza=randint(posxminima, posxmassima)
         self.monete_pos_x=1200
         self.screen=screen        
         self.moneta1=pygame.image.load('immaginiGioco/moneta1.png')
@@ -133,6 +147,15 @@ class Monete:
         self.moneteArray=[self.moneta1,self.moneta2,self.moneta3,self.moneta4,self.moneta5,self.moneta6,self.moneta6,self.moneta8]
         self.monete_index=0
         self.monete_surface=self.moneteArray[self.monete_index]
+        self.rect=self.moneta1.get_rect()
+    
+    def collide(self, other_rect):
+        return self.rect.colliderect(other_rect)
+    
+         
+
+
+
 
     def animazione_monete(self):
         self.monete_index+=0.1
@@ -145,7 +168,8 @@ class Monete:
             self.monete_pos_x+=VelAvanza
         if keys[pygame.K_RIGHT]:
             self.monete_pos_x-=VelAvanza
-        screen.blit(self.monete_surface,(self.monete_pos_x,self.monete_altezza))
+        self.rect.x = self.monete_pos_x
+        screen.blit(self.monete_surface,self.rect)
         
 def animation():
     global sonic_surface, sonic_index, sonic_index2
@@ -185,8 +209,12 @@ mob_tutti.append(mob())
 
 
 Clock=pygame.time.Clock()
+punteggio=0
+
 
 while True:
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -196,6 +224,16 @@ while True:
             if event.key==pygame.K_ESCAPE:
                 pygame.quit()
                 exit()
+
+    
+    for i in range(len(monete_tutte)):
+        if monete_tutte[i].collide(sonic_rect):
+            punteggio+=1
+            monete_tutte.pop(i)
+            generamoneta()
+    
+    draw_text(str(punteggio), font, (255,255,0), screen, 550, 10)  
+        
 
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,ground_rect)
