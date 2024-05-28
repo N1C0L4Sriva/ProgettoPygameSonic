@@ -1,6 +1,52 @@
-import pygame
+import pygame,sys
+pygame.font.init()
 from sys import exit
 from random import randint
+
+screen=pygame.display.set_mode((1100,800))
+
+pygame.display.set_caption('sonic')
+BLUE = (0, 0, 255)
+WHITE = (255, 255, 255)
+
+# Creazione della finestra
+pygame.display.set_caption('Sonic Main Menu')
+
+# Font per il testo
+font = pygame.font.SysFont("sonic font", 80)
+
+def draw_text(text, font, color, surface, x, y):
+    text_obj = font.render(text, True, color)
+    text_rect = text_obj.get_rect(center=(x, y))
+    surface.blit(text_obj, text_rect)
+
+def main_menu():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.collidepoint(event.pos):
+                    print("Start button clicked!")
+                    # Qui potresti inserire la chiamata per avviare il gioco
+                    # start_game()
+
+        screen.fill(BLUE)
+
+        # Disegna il testo "START"
+        draw_text('START ', font, WHITE, screen, 1100 // 2, 800 // 2)
+
+        # Crea un rettangolo attorno al testo "START"
+        start_button = pygame.Rect((11000 // 2 - 100, 800 // 2 - 50), (200, 100))
+        pygame.draw.rect(screen, WHITE, start_button, 2)
+
+        pygame.display.flip()
+
+if __name__ == "__main__":
+    main_menu()
+
+
 
 sonic_y=750
 sonic_x=300
