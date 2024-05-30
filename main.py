@@ -235,6 +235,8 @@ punteggio=0
 def aggiorna():
     pygame.display.update()
     Clock.tick(60+pygame.time.get_ticks()//2000)
+def inizializza():
+    
     
 def game_over():
     screen.blit("gameover.png")

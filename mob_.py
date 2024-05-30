@@ -2,10 +2,6 @@ import pygame
 from random import randint
 #CLASSE PER I MOSTRI
 VelAvanza=7
-<<<<<<< HEAD
-
-=======
->>>>>>> aabde701219726a3cb988812c62abd1cc25e981d
 gravità=0 
 
 class mob:
@@ -23,11 +19,7 @@ class mob:
         self.vel_x=5
         self.mob_rect=self.mob1.get_rect(topleft=(self.mob_x,self.mob_y))
 
-<<<<<<< HEAD
     def movimento_mob(self, keys):
-=======
-    def movimento_mob(self,keys):
->>>>>>> aabde701219726a3cb988812c62abd1cc25e981d
         self.parametro2+=0.02
         if int(self.parametro2)==0:
             self.mob_rect.x-=self.vel_x
