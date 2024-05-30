@@ -95,8 +95,8 @@ class piattaforme:
         if sonic_rect.colliderect(self.rect):
             if gravità>0:
                 sonic_rect.bottom=self.rect.top
-            if gravità<=0:
-                gravità=10
+            if gravità==0:
+                gravità=5
                 sonic_rect.top=self.rect.bottom
            
 class Monete:
@@ -261,22 +261,25 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if sonic_logo_rect.collidepoint(event.pos):
+                if start_button_rect.collidepoint(event.pos):
                     print("Start button clicked!")
                     # Qui potresti inserire la chiamata per avviare il gioco
                     gioco()
 
-        screen.fill(BLUE)
+        background_menu=pygame.image.load('immaginiGioco/sonic_menu.png')
+        background_menu_1=pygame.transform.scale(background_menu, (1100,800))
+        screen.blit(background_menu_1,(0,0))
 
         # Disegna il testo "START"
         sonic_logo=pygame.image.load('immaginiGioco/sonicLogo.png')
-        draw_text('START ', font, WHITE, screen, 1100 // 2, 800 // 2)
+        start_button=pygame.image.load('immaginiGioco/start_button.png')
+        start_button1=pygame.transform.scale(start_button, (500,200))
 
         # Crea un rettangolo attorno al testo "START"
-        sonic_logo=pygame.image.load('immaginiGioco/sonicLogo.png')
         sonic_logo_rect=sonic_logo.get_rect(bottomleft=(350,300))
-        start_button = pygame.Rect((11000 // 2 - 100, 800 // 2 - 50), (200, 100))
-        pygame.draw.rect(screen, WHITE, start_button, 2)
+        start_button_rect=start_button1.get_rect(topleft=(300,300))
+        
+        screen.blit(start_button1,start_button_rect)
         screen.blit(sonic_logo,sonic_logo_rect)
 
         pygame.display.flip()
