@@ -1,25 +1,13 @@
 import pygame,sys
-pygame.font.init()
 from sys import exit
 from random import randint
 from mob_ import mob
 from piattaforme_ import piattaforme
 from monete_ import Monete
-    
-class alberi:
-    def __init__(self):
-        self.albero=pygame.image.load('immaginiGioco/tree.png').convert()
-        self.alberi1=pygame.transform.scale(self.albero,(70,400))
-        self.posx_albero=randint(1100,1300)
-    
-    def draw_alberi(self):
-        if keys[pygame.K_LEFT]:
-            self.posx_albero+=VelAvanza
-        if keys[pygame.K_RIGHT]:
-            self.posx_albero-=VelAvanza
-        screen.blit(self.alberi1,(self.posx_albero,305))
+from alberi_ import alberi
 
-    
+pygame.font.init() 
+
 pygame.init() 
 
 screen=pygame.display.set_mode((1100,700))
@@ -119,7 +107,7 @@ def gioco():
             alberi_tutti.append(alberi())
     
         for alber in alberi_tutti:
-            alber.draw_alberi()
+            alber.draw_alberi(keys, screen)
 
         animation()
         screen.blit(sonic_surface,sonic_rect)
