@@ -5,6 +5,7 @@ from mob_ import mob
 from piattaforme_ import piattaforme
 from monete_ import Monete
 from alberi_ import alberi
+from punteggio_ import Punti
 
 pygame.init() 
 
@@ -12,7 +13,7 @@ screen=pygame.display.set_mode((1100,700))
 pygame.display.set_caption('sonic')
 
 def inizializza():
-    global sky_surface, ground_surface, ground_rect, alberi_tutti, mob_tutti, monete_tutte, piattaforme_tutte, gameover1
+    global sky_surface, ground_surface, ground_rect, alberi_tutti, mob_tutti, monete_tutte, piattaforme_tutte, gameover1, punti1
 
     sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
     ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
@@ -30,6 +31,7 @@ def inizializza():
 
     alberi_tutti=[]
     alberi_tutti.append(alberi())
+    punti1=Punti(screen, (30,30), (30,30))
 
 def aggiorna():
     pygame.display.update()
@@ -155,6 +157,13 @@ def gioco():
             generamoneta(piattaforme_tutte)
             ismonetavalida(moneta, piattaforme_tutte)
             moneta.aggiungimonete(screen, keys)
+        
+            if sonic_rect.colliderect(moneta.rect):
+                punti1.punti+=1
+                monete_tutte.remove(moneta)
+            punti1.draw()
+           
+
 
         #PIATTAFORME
         if piattaforme_tutte[-1].rect.x<850:
@@ -167,6 +176,8 @@ def gioco():
         #MOSTRI
         if mob_tutti[-1].mob_rect.x<650:
             mob_tutti.append(mob(screen))
+
+
 
         for mostro in mob_tutti:
             mostro.movimento_mob(keys)
