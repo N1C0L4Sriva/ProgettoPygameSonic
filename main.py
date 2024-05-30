@@ -3,6 +3,7 @@ pygame.font.init()
 from sys import exit
 from random import randint
 from mob_ import mob
+<<<<<<< HEAD
 
 screen=pygame.display.set_mode((1100,700))
 
@@ -137,6 +138,10 @@ class Monete:
             self.monete_pos_x-=VelAvanza
         self.rect.x = self.monete_pos_x
         screen.blit(self.monete_surface,self.rect)
+=======
+from piattaforme_ import piattaforme
+from monete_ import Monete
+>>>>>>> aabde701219726a3cb988812c62abd1cc25e981d
     
 class alberi:
     def __init__(self):
@@ -215,7 +220,7 @@ altezza_sonic2=sonic_surface.get_height()
 
 #ARRAY PER IMPORTARE LE CLASSI
 piattaforme_tutte=[]
-piattaforme_tutte.append(piattaforme())
+piattaforme_tutte.append(piattaforme(screen))
 
 monete_tutte=[]
 monete_tutte.append(Monete())
@@ -288,6 +293,9 @@ def gioco():
             ground_rect.x+=4
             if ground_rect.x>0:
                 ground_rect.x=-50
+        
+        if keys[pygame.K_UP] and (sonic_rect.colliderect(ground_rect)):
+            gravità=-20
 
         if sonic_rect.colliderect(ground_rect)and sonic_rect.bottom>=700:
             sonic_rect.bottom=ground_rect.top +1
@@ -298,14 +306,16 @@ def gioco():
     
         for moneta in monete_tutte:
             moneta.animazione_monete()
-
+            generamoneta(piattaforme_tutte)
+            ismonetavalida(moneta, piattaforme_tutte)
             moneta.aggiungimonete()
 
         #PIATTAFORME
         if piattaforme_tutte[-1].rect.x<850:
-            piattaforme_tutte.append(piattaforme())
+            piattaforme_tutte.append(piattaforme(screen))
 
         for platform in piattaforme_tutte:
+<<<<<<< HEAD
             platform.mov_piattaforme()
             platform.draw_piattaforme()
     
@@ -320,6 +330,12 @@ def gioco():
             moneta.aggiungimonete()
             
     
+=======
+            platform.mov_piattaforme(keys,sonic_rect, gravità)
+            platform.draw_piattaforme(screen)
+
+        #MOSTRI
+>>>>>>> aabde701219726a3cb988812c62abd1cc25e981d
         if mob_tutti[-1].mob_rect.x<650:
             mob_tutti.append(mob(screen))
 
@@ -331,7 +347,6 @@ def gioco():
 
         
 
-BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 
 # Creazione della finestra
