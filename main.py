@@ -2,46 +2,14 @@ import pygame,sys
 pygame.font.init()
 from sys import exit
 from random import randint
-
-#CLASSE PER I MOSTRI
-class mob:
-    global keys ,gravità
-    def __init__(self):
-        self.screen=screen
-        self.mob_x=randint(1300,1500)
-        self.mob_y=620
-        self.mob1_01=pygame.image.load('immaginiGioco/mob1_01.png').convert_alpha()
-        self.mob1_02=pygame.image.load('immaginiGioco/mob1_02.png').convert_alpha()
-        self.mob1_00=[self.mob1_01,self.mob1_02]
-        self.parametro=0
-        self.parametro2=0
-        self.mob1=self.mob1_00[self.parametro]
-        self.vel_y=5
-        self.mob_rect=self.mob1.get_rect(topleft=(self.mob_x,self.mob_y))
-
-    def movimento_mob(self):
-        self.parametro2+=0.02
-        if int(self.parametro2)==0:
-            self.mob_rect.y-=self.vel_y
-        else:
-            self.mob_rect.y+=self.vel_y
-        if int(self.parametro2)>1:
-            self.parametro2=0
-
-        if keys[pygame.K_LEFT]:
-            self.mob_rect.x+=VelAvanza
-        if keys[pygame.K_RIGHT]:
-            self.mob_rect.x-=VelAvanza
-    
-    def draw_mob(self):
-        screen.blit(self.mob1,self.mob_rect)
+from mob_ import mob
 
 #CLASSE PER LE PIATTAFORME
 class piattaforme:
     def __init__(self):
         self.screen=screen
-        self.piattaforma1_x=randint(1100,1400)
-        self.piattaforma1_y=randint(400,600)
+        self.piattaforma1_x=randint(1100,2000)
+        self.piattaforma1_y=randint(400,550)
         self.piattaforma1=pygame.image.load('immaginiGioco/piattaforma.png').convert()
         self.rect=self.piattaforma1.get_rect(topleft=(self.piattaforma1_x,self.piattaforma1_y))
 
@@ -65,7 +33,7 @@ class piattaforme:
         if sonic_rect.colliderect(self.rect):
             if gravità>0:
                 sonic_rect.bottom=self.rect.top
-            if gravità==0:
+            if gravità<=0:
                 gravità=5
                 sonic_rect.top=self.rect.bottom
 
@@ -74,7 +42,6 @@ class Monete:
     def __init__(self,posxminima=1100, posxmassima=1300):
         self.monete_pos_x=1300
         self.monete_altezza=randint(300,650)
-        
         self.monete_larghezza=randint(posxminima, posxmassima)
         self.monete_pos_x=1200
         self.screen=screen        
@@ -89,12 +56,11 @@ class Monete:
         self.moneteArray=[self.moneta1,self.moneta2,self.moneta3,self.moneta4,self.moneta5,self.moneta6,self.moneta6,self.moneta8]
         self.monete_index=0
         self.monete_surface=self.moneteArray[self.monete_index]
-        self.rect=self.moneta1.get_rect()
+        self.rect=self.moneta1.get_rect(topleft=(self.monete_pos_x,self.monete_altezza))
     
     def collide(self, other_rect):
         return self.rect.colliderect(other_rect)
     
-
     def animazione_monete(self):
         self.monete_index+=0.1
         if self.monete_index>=len(self.moneteArray):
@@ -108,7 +74,21 @@ class Monete:
             self.monete_pos_x-=VelAvanza
         self.rect.x = self.monete_pos_x
         screen.blit(self.monete_surface,self.rect)
+    
+class alberi:
+    def __init__(self):
+        self.albero=pygame.image.load('immaginiGioco/tree.png').convert()
+        self.alberi1=pygame.transform.scale(self.albero,(70,400))
+        self.posx_albero=randint(1100,1300)
+    
+    def draw_alberi(self):
+        if keys[pygame.K_LEFT]:
+            self.posx_albero+=VelAvanza
+        if keys[pygame.K_RIGHT]:
+            self.posx_albero-=VelAvanza
+        screen.blit(self.alberi1,(self.posx_albero,305))
 
+    
 pygame.init() 
 
 screen=pygame.display.set_mode((1100,700))
@@ -131,25 +111,11 @@ def ismonetavalida(moneta, piattaforme_tutte):
             return False
     return True
 
-def generamoneta(piattaforma_tutte):
+def generamoneta(piattaforme_tutte):
     moneta=Monete()
     while not ismonetavalida(moneta, piattaforme_tutte):
         moneta=Monete()
     return moneta
-
-sonic_y=750
-sonic_x=300
-gravità=0 
-VelAvanza=10
-
-
-#ANIMAZIONE SONIC        
-def animation():
-    global sonic_surface, sonic_index, sonic_index2
-    sonic_index+=0.1
-    if sonic_index>=len(sonic_walk):
-        sonic_index=0
-    sonic_surface=sonic_walk[int(sonic_index)] 
 
 screen=pygame.display.set_mode((1100,800))
 
@@ -160,7 +126,19 @@ sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
 ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
 ground_rect=ground_surface.get_rect(topleft=(-100,700))
 
-#SONIC
+#SONIC     
+def animation():
+    global sonic_surface, sonic_index, sonic_index2
+    sonic_index+=0.1
+    if sonic_index>=len(sonic_walk):
+        sonic_index=0
+    sonic_surface=sonic_walk[int(sonic_index)] 
+
+sonic_y=750
+sonic_x=300
+gravità=0 
+VelAvanza=10
+
 sonic=pygame.image.load('immaginiGioco/sonic.png').convert_alpha()
 sonic_rect=sonic.get_rect(bottomleft=(sonic_x,sonic_y))
 sonic2=pygame.image.load('immaginiGioco/sonic2.png').convert_alpha()
@@ -180,8 +158,10 @@ monete_tutte=[]
 monete_tutte.append(Monete())
 
 mob_tutti=[]
-mob_tutti.append(mob())
+mob_tutti.append(mob(screen))
 
+alberi_tutti=[]
+alberi_tutti.append(alberi())
 
 Clock=pygame.time.Clock()
 punteggio=0
@@ -190,6 +170,7 @@ punteggio=0
 def gioco():
     global gravità, keys
     while True:
+        keys=pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -203,6 +184,12 @@ def gioco():
         screen.blit(sky_surface,(0,0))
         screen.blit(ground_surface,ground_rect)
 
+        if alberi_tutti[-1].posx_albero<750:
+            alberi_tutti.append(alberi())
+    
+        for alber in alberi_tutti:
+            alber.draw_alberi()
+
         animation()
         screen.blit(sonic_surface,sonic_rect)
 
@@ -211,7 +198,6 @@ def gioco():
         sonic_rect.y+=gravità
 
         #muovo sonic con la tastiera 
-        keys=pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             ground_rect.x-=4
             if ground_rect.x<=-50:
@@ -231,6 +217,7 @@ def gioco():
     
         for moneta in monete_tutte:
             moneta.animazione_monete()
+
             moneta.aggiungimonete()
 
         #PIATTAFORME
@@ -243,11 +230,11 @@ def gioco():
 
         #MOSTRI
         if mob_tutti[-1].mob_rect.x<650:
-            mob_tutti.append(mob())
+            mob_tutti.append(mob(screen))
 
         for mostro in mob_tutti:
             mostro.movimento_mob()
-            mostro.draw_mob()
+            mostro.draw_mob(screen)
 
         pygame.display.update()
         Clock.tick(60+pygame.time.get_ticks()//2000)
