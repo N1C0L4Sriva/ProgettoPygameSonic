@@ -3,7 +3,8 @@ pygame.font.init()
 from sys import exit
 from random import randint
 from mob_ import mob
-<<<<<<< HEAD
+from piattaforme_ import piattaforme
+from monete_ import Monete
 
 screen=pygame.display.set_mode((1100,700))
 
@@ -138,10 +139,7 @@ class Monete:
             self.monete_pos_x-=VelAvanza
         self.rect.x = self.monete_pos_x
         screen.blit(self.monete_surface,self.rect)
-=======
-from piattaforme_ import piattaforme
-from monete_ import Monete
->>>>>>> aabde701219726a3cb988812c62abd1cc25e981d
+
     
 class alberi:
     def __init__(self):
@@ -315,7 +313,6 @@ def gioco():
             piattaforme_tutte.append(piattaforme(screen))
 
         for platform in piattaforme_tutte:
-<<<<<<< HEAD
             platform.mov_piattaforme()
             platform.draw_piattaforme()
     
@@ -330,12 +327,10 @@ def gioco():
             moneta.aggiungimonete()
             
     
-=======
             platform.mov_piattaforme(keys,sonic_rect, gravità)
             platform.draw_piattaforme(screen)
 
         #MOSTRI
->>>>>>> aabde701219726a3cb988812c62abd1cc25e981d
         if mob_tutti[-1].mob_rect.x<650:
             mob_tutti.append(mob(screen))
 
