@@ -24,7 +24,7 @@ def ismonetavalida(moneta, piattaforme_tutte):
             return False
     return True
 
-def generamoneta(piattafroma_tutte):
+def generamoneta(piattaforme_tutte):
     moneta=Monete()
     while not ismonetavalida(moneta, piattaforme_tutte):
         moneta=Monete()
@@ -228,7 +228,11 @@ def gioco():
     
         for moneta in monete_tutte:
             moneta.animazione_monete()
+            ismonetavalida(moneta, piattaforme_tutte)
+            generamoneta(piattaforme_tutte)
+            
             moneta.aggiungimonete()
+            
     
         if mob_tutti[-1].mob_rect.x<650:
             mob_tutti.append(mob())
@@ -236,6 +240,8 @@ def gioco():
         for mostro in mob_tutti:
             mostro.movimento_mob()
             mostro.draw_mob()
+        
+
 
         pygame.display.update()
         Clock.tick(60+pygame.time.get_ticks()//2000)
