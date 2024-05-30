@@ -43,9 +43,9 @@ def ismonetavalida(moneta, piattaforme_tutte):
     return True
 
 def generamoneta(piattaforme_tutte):
-    moneta=Monete()
+    moneta=Monete(screen, posxminima=1100, posxmassima=1300)
     while not ismonetavalida(moneta, piattaforme_tutte):
-        moneta=Monete()
+        moneta=Monete(screen, posxminima=1100, posxmassima=1300)
     return moneta
 
 screen=pygame.display.set_mode((1100,800))
@@ -86,7 +86,7 @@ piattaforme_tutte=[]
 piattaforme_tutte.append(piattaforme(screen))
 
 monete_tutte=[]
-monete_tutte.append(Monete())
+monete_tutte.append(Monete(screen, posxminima=1100, posxmassima=1300))
 
 mob_tutti=[]
 mob_tutti.append(mob(screen))
@@ -147,13 +147,13 @@ def gioco():
 
         #MONETE
         if monete_tutte[-1].monete_pos_x<750:
-            monete_tutte.append(Monete())
+            monete_tutte.append(Monete(screen, posxminima=1100, posxmassima=1300))
     
         for moneta in monete_tutte:
             moneta.animazione_monete()
             generamoneta(piattaforme_tutte)
             ismonetavalida(moneta, piattaforme_tutte)
-            moneta.aggiungimonete()
+            moneta.aggiungimonete(screen, keys)
 
         #PIATTAFORME
         if piattaforme_tutte[-1].rect.x<850:
