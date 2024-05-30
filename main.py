@@ -159,22 +159,27 @@ def gioco():
                 punti1.punti+=1
                 monete_tutte.remove(moneta)
             punti1.draw()
-           
-
 
         #PIATTAFORME
         if piattaforme_tutte[-1].rect.x<850:
             piattaforme_tutte.append(piattaforme(screen))
 
         for platform in piattaforme_tutte:
-            platform.mov_piattaforme(keys,sonic_rect, gravità)
+            platform.mov_piattaforme(keys)
+            if platform.rect.colliderect(sonic_rect):
+                if sonic_rect.bottom<platform.rect.centery:
+                    gravità=0
+                    sonic_rect.bottom=platform.rect.top 
+                    if keys[pygame.K_UP] :
+                        gravità=-20
+
             platform.draw_piattaforme(screen)
+            # platform.sonic_sopra_piattaforma(keys,sonic_rect,gravità)
+
 
         #MOSTRI
         if mob_tutti[-1].mob_rect.x<650:
             mob_tutti.append(mob(screen))
-
-
 
         for mostro in mob_tutti:
             mostro.movimento_mob(keys)
