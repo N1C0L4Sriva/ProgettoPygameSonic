@@ -68,9 +68,6 @@ screen=pygame.display.set_mode((1100,800))
 
 pygame.display.set_caption('sonic')
 
-#MONDO
-
-
 #SONIC     
 def animation():
     global sonic_surface, sonic_index, sonic_index2
@@ -137,7 +134,7 @@ def gioco():
 
         if keys[pygame.K_LEFT]:
             ground_rect.x+=4
-            if ground_rect.x>0:
+            if ground_rect.x>=0:
                 ground_rect.x=-50
         
         if keys[pygame.K_UP] and (sonic_rect.colliderect(ground_rect)):
@@ -180,14 +177,6 @@ WHITE = (255, 255, 255)
 
 # Creazione della finestra
 pygame.display.set_caption('Sonic Main Menu')
-
-# Font per il testo
-font = pygame.font.SysFont("sonic font", 80)
-
-def draw_text(text, font, color, surface, x, y):
-    text_obj = font.render(text, True, color)
-    text_rect = text_obj.get_rect(center=(x, y))
-    surface.blit(text_obj, text_rect)
 
 def main_menu():
     while True:
