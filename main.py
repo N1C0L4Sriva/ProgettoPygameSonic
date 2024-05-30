@@ -107,7 +107,7 @@ def gioco():
             alberi_tutti.append(alberi())
     
         for alber in alberi_tutti:
-            alber.draw_alberi(keys, screen)
+            alber.draw_alberi(keys,screen)
 
         animation()
         screen.blit(sonic_surface,sonic_rect)
