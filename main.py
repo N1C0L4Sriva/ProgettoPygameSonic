@@ -6,23 +6,51 @@ from piattaforme_ import piattaforme
 from monete_ import Monete
 from alberi_ import alberi
 
-pygame.font.init() 
-
 pygame.init() 
 
 screen=pygame.display.set_mode((1100,700))
 pygame.display.set_caption('sonic')
 
+def inizializza():
+    global sky_surface, ground_surface, ground_rect, alberi_tutti, mob_tutti, monete_tutte, piattaforme_tutte, gameover1
+
+    sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
+    ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
+    ground_rect=ground_surface.get_rect(topleft=(-100,700))
+    gameover1=pygame.image.load('immaginiGioco/gameover.jpg')
+
+    piattaforme_tutte=[]
+    piattaforme_tutte.append(piattaforme(screen))
+
+    monete_tutte=[]
+    monete_tutte.append(Monete(screen, posxminima=1100, posxmassima=1300))
+
+    mob_tutti=[]
+    mob_tutti.append(mob(screen))
+
+    alberi_tutti=[]
+    alberi_tutti.append(alberi())
+
+def aggiorna():
+    pygame.display.update()
+    Clock.tick(60+pygame.time.get_ticks()//2000)
+
+def gameover():
+    screen.blit(gameover1,(0,0))
+    ricomincia=False
+    while not ricomincia:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN and event.key==pygame.K_SPACE:
+                inizializza()
+                ricomincia=True
+            if event.type==pygame.QUIT:
+                pygame.quit()
+            aggiorna()
+            
+inizializza()
+
 # Creazione della finestra
 pygame.display.set_caption('Sonic Main Menu')
-
-# Font per il testo
-font = pygame.font.SysFont("sonic font", 80)
-
-def draw_text(text, font, color, surface, x, y):
-    text_obj = font.render(text, True, color)
-    text_rect = text_obj.get_rect(center=(x, y))
-    surface.blit(text_obj, text_rect)
 
 def ismonetavalida(moneta, piattaforme_tutte):
     for piattaforma in piattaforme_tutte:
@@ -41,9 +69,7 @@ screen=pygame.display.set_mode((1100,800))
 pygame.display.set_caption('sonic')
 
 #MONDO
-sky_surface=pygame.image.load('immaginiGioco/background2.png').convert()
-ground_surface=pygame.image.load('immaginiGioco/pavimento1.png').convert()
-ground_rect=ground_surface.get_rect(topleft=(-100,700))
+
 
 #SONIC     
 def animation():
@@ -68,19 +94,6 @@ sonic_surface=sonic_walk[sonic_index]
 
 larghezza_sonic2=sonic_surface.get_width()
 altezza_sonic2=sonic_surface.get_height()
-
-#ARRAY PER IMPORTARE LE CLASSI
-piattaforme_tutte=[]
-piattaforme_tutte.append(piattaforme(screen))
-
-monete_tutte=[]
-monete_tutte.append(Monete(screen, posxminima=1100, posxmassima=1300))
-
-mob_tutti=[]
-mob_tutti.append(mob(screen))
-
-alberi_tutti=[]
-alberi_tutti.append(alberi())
 
 Clock=pygame.time.Clock()
 punteggio=0
@@ -157,10 +170,11 @@ def gioco():
 
         for mostro in mob_tutti:
             mostro.movimento_mob(keys)
+            if sonic_rect.colliderect(mostro.mob_rect):
+                gameover()
             mostro.draw_mob(screen)
 
-        pygame.display.update()
-        Clock.tick(60+pygame.time.get_ticks()//2000)
+        aggiorna()
 
 WHITE = (255, 255, 255)
 

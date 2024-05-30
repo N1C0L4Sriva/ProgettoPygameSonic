@@ -34,4 +34,5 @@ class mob:
             self.mob_rect.x-=VelAvanza
     
     def draw_mob(self,screen):
+        global mob_rect
         screen.blit(self.mob1,self.mob_rect)
