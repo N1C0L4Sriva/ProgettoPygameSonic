@@ -159,16 +159,16 @@ def gioco_multiplayer():
             ground_rect.x=0
 
         if keys[pygame.K_RIGHT]:
-            sonic_rect.x+=5
+            sonic_rect.x+=6
     
         if keys[pygame.K_d]:
-            rose_rect.x+=5
+            rose_rect.x+=6
 
         if keys[pygame.K_LEFT]:
-            sonic_rect.x-=1
+            sonic_rect.x-=4
             
         if keys[pygame.K_a]:
-            rose_rect.x-=1
+            rose_rect.x-=4
         
         if keys[pygame.K_UP] and (sonic_rect.colliderect(ground_rect)):
             gravità=-20
