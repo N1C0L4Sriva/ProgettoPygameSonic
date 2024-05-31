@@ -151,7 +151,7 @@ def gioco_multiplayer():
         gravità2+=1
         rose_rect.y+=gravità2
 
-        #muovo sonic con la tastiera 
+        #muovo sonic e rose con la tastiera 
         ground_rect.x-=3
         sonic_rect.x-=3
         rose_rect.x-=3
@@ -323,7 +323,6 @@ def gioco():
 
             platform.draw_piattaforme(screen)
             # platform.sonic_sopra_piattaforma(keys,sonic_rect,gravità)
-
 
         #MOSTRI
         if mob_tutti[-1].mob_rect.x<650:
