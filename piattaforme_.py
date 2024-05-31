@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 #CLASSE PER LE PIATTAFORME
-VelAvanza=10
+VelAvanza=7
 
 class piattaforme:
     def __init__(self, screen):

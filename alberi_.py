@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 
-VelAvanza=10
+VelAvanza=7
 #CLASSE ALBERI
 class alberi:
     def __init__(self):

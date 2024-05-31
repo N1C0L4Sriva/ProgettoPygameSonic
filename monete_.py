@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 
-VelAvanza=10
+VelAvanza=7
 #CLASSE PER LE MONETE      
 class Monete:
     def __init__(self,screen, posxminima=1100, posxmassima=1300):

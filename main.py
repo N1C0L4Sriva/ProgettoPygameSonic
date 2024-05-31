@@ -237,6 +237,13 @@ def gioco_multiplayer():
                 gameover()
             mostro.draw_mob(screen)
         
+        #altra condizione di gameover:
+        if sonic_rect.x<=-60:
+            gameover()
+        
+        if rose_rect.x<=-60:
+            gameover()
+        
         #personaggi
         animation()
         screen.blit(sonic_surface,sonic_rect)
